@@ -240,7 +240,9 @@ foreach (sort (keys %xamzHeaders)) {
 }
 
 # NOTE: Need to skip the Date: header, in case x-amz-date got provided
+my $locale = POSIX::setlocale(POSIX::LC_TIME, "C");
 my $httpDate = (defined $xamzHeaders{'x-amz-date'}) ? '' : POSIX::strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime);
+POSIX::setlocale(POSIX::LC_TIME, $locale);
 my $stringToSign = "$method\n$contentMD5\n$contentType\n$httpDate\n$xamzHeadersToSign$resource";
 
 debug("StringToSign='" . $stringToSign . "'");
