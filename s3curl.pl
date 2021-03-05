@@ -14,6 +14,9 @@
 use strict;
 use POSIX;
 
+use utf8;
+use Encode;
+
 # you might need to use CPAN to get these modules.
 # run perl -MCPAN -e "install <module>" to get them.
 
@@ -242,7 +245,7 @@ my $stringToSign = "$method\n$contentMD5\n$contentType\n$httpDate\n$xamzHeadersT
 
 debug("StringToSign='" . $stringToSign . "'");
 my $hmac = Digest::HMAC_SHA1->new($secretKey);
-$hmac->add($stringToSign);
+$hmac->add(Encode::encode('UTF-8', $stringToSign));
 my $signature = encode_base64($hmac->digest, "");
 
 
